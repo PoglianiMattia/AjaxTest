@@ -34,6 +34,14 @@
         rounded
       />
       <div>task globale: {{ task }}</div>
+      <q-list separator bordered class="bg-white">
+        <q-item v-for="task in data.tasks" :key="task" clickable v-ripple>
+          <q-item-section>{{ task }}</q-item-section>
+          <q-item-section avatar>
+            <q-icon color="primary" name="check" />
+          </q-item-section>
+        </q-item>
+      </q-list>
     </div>
   </q-page>
 </template>
@@ -46,7 +54,7 @@ import { api } from "boot/axios";
 const count = ref(0);
 const data = ref({
   newTask: "",
-  tasks: [],
+  tasks: ["prova1"],
 });
 
 // functions that mutate state and trigger updates
