@@ -37,79 +37,81 @@
     </div>
   </q-page>
 </template>
-
-<script>
-import { defineComponent } from "vue";
+<script setup>
+import { ref, onMounted } from "vue";
 import { useQuasar } from "quasar";
-import { ref } from "vue";
-import { api } from 'boot/axios'
+import { api } from "boot/axios";
 
-export default {
-  setup() {
-    const $q = useQuasar();
-    const task = ref(null);
-    const accept = ref(false);
+// reactive state
+const count = ref(0);
+const data = ref({
+  newTask: "",
+  tasks: [],
+});
 
-    return {
-      task,
-      accept,
+// functions that mutate state and trigger updates
+function increment() {
+  count.value++;
+}
 
-      onSubmit() {
-        if (accept.value !== true) {
-          $q.notify({
-            color: "red-5",
-            textColor: "white",
-            icon: "warning",
-            message: "You need to accept the license and terms first",
-          });
-        } else {
-          console.log("task inserito", task.value);
-          api
-            .get("/addTask?id=" + task.value)
-            .then((response) => {
-              console.log("successo", response);
-              $q.notify({
-                color: "green-4",
-                textColor: "white",
-                icon: "cloud_done",
-                message: "Submitted",
-              });
-            })
-            .catch(() => {
-              $q.notify({
-                color: "negative",
-                position: "top",
-                message: "Loading failed",
-                icon: "report_problem",
-              });
-            });
-        }
-      },
+// lifecycle hooks
+onMounted(() => {
+  console.log(`The initial count is ${count.value}.`);
+});
 
-      onReset() {
-        task.value = null;
-        accept.value = false;
-      },
-    };
-  },
-  methods: {
-    stampaPDF() {
-      console.log("PDF stampato");
-      return "ciao";
-    },
-    addTask() {
-      this.tasks.push({ task: this.task });
-      this.tasks = "";
-      console.log("array", this.tasks);
-    },
-  },
-  define: {
-    data() {
-      return {
-        newTask: "",
-        tasks: [],
-      };
-    },
-  },
-};
+const $q = useQuasar();
+const task = ref(null);
+const accept = ref(false);
+
+function onSubmit() {
+  if (accept.value !== true) {
+    $q.notify({
+      color: "red-5",
+      textColor: "white",
+      icon: "warning",
+      message: "You need to accept the license and terms first",
+    });
+  } else {
+    console.log("task inserito", task.value);
+    api
+      .get("/addTask?id=" + task.value)
+      .then((response) => {
+        console.log("successo", response);
+        console.log("task:", task.value);
+        console.log("data:", data.value);
+        data.value.newTask = task.value;
+        data.value.tasks.push(task.value);
+        console.log("data again:", data.value);
+
+        $q.notify({
+          color: "green-4",
+          textColor: "white",
+          icon: "cloud_done",
+          message: "Submitted",
+        });
+      })
+      .catch(() => {
+        $q.notify({
+          color: "negative",
+          position: "top",
+          message: "Loading failed",
+          icon: "report_problem",
+        });
+      });
+  }
+}
+
+function onReset() {
+  task.value = null;
+  accept.value = false;
+  data.value = {
+    newTask: "",
+    tasks: [],
+  };
+}
+
+function stampaPDF() {
+  console.log("PDF stampato");
+  return "ciao";
+}
 </script>
