@@ -37,7 +37,13 @@
       <q-list separator bordered class="bg-white">
         <q-item v-for="task in data.tasks" :key="task" v-ripple>
           <q-item-section>{{ task }}</q-item-section>
-          <q-btn flat rounded color="primary" icon="check" />
+          <q-btn
+            flat
+            rounded
+            color="primary"
+            icon="check"
+            v-on:click="deleteTask(task)"
+          />
         </q-item>
       </q-list>
     </div>
@@ -102,6 +108,23 @@ function onReset() {
     newTask: "",
     tasks: [],
   };
+}
+
+function deleteTask(toDelete) {
+  $q.dialog({
+    title: "Sure?",
+    message: "vuoi cancellare",
+    cancel: true,
+    persistent: true,
+  }).onOk(() => {
+    data.value.tasks = data.value.tasks.filter((item) => item !== toDelete);
+    $q.notify({
+      color: "green-4",
+      textColor: "white",
+      icon: "cloud_done",
+      message: "Task deleted",
+    });
+  });
 }
 
 function stampaPDF() {
