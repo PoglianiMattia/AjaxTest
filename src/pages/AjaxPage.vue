@@ -45,6 +45,7 @@
     </div>
   </q-page>
 </template>
+
 <script setup>
 import { ref, onMounted } from "vue";
 import { useQuasar } from "quasar";
