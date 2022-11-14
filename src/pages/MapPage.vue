@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-const center = { lat: 45.274068, lng: 9.09342 };
+const center = { lat: 45.470014, lng: 9.183974 };
 const markers = [
   {
     position: {

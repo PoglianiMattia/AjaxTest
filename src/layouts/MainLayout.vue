@@ -37,12 +37,12 @@
             <q-item-section> Ajax </q-item-section>
           </q-item>
 
-          <q-item clickable v-ripple to="/contacts" exact>
+          <q-item clickable v-ripple to="/map" exact>
             <q-item-section avatar>
               <q-icon name="shower" />
             </q-item-section>
 
-            <q-item-section> Page2 </q-item-section>
+            <q-item-section> Google Map </q-item-section>
           </q-item>
         </q-list>
       </q-scroll-area>
@@ -64,7 +64,8 @@ export default defineComponent({
   setup() {
     const leftDrawerOpen = ref(false);
 
-    return {leftDrawerOpen,
+    return {
+      leftDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
